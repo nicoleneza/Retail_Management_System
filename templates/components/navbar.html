@@ -1,0 +1,94 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+	<div class="container-fluid">
+		<a class="navbar-brand" href="{% url 'dashboard:index' %}">
+			<i class="fas fa-store"></i> Retail Management
+		</a>
+		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+
+		<div class="collapse navbar-collapse" id="navbarNav">
+			<ul class="navbar-nav ms-auto">
+				{% if user.is_authenticated %}
+					{% if user.user_type == 'staff' %}
+						<!-- Staff Navigation -->
+						<li class="nav-item">
+							<a class="nav-link {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}" 
+							   href="{% url 'dashboard:index' %}">
+								<i class="fas fa-tachometer-alt"></i> Dashboard
+							</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link {% if 'inventory' in request.path %}active{% endif %}" 
+							   href="{% url 'inventory:index' %}">
+								<i class="fas fa-boxes"></i> Inventory
+							</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link {% if 'sales' in request.path %}active{% endif %}" 
+							   href="{% url 'sales:index' %}">
+								<i class="fas fa-shopping-cart"></i> Sales
+							</a>
+						</li>
+					{% endif %}
+
+					{% if user.user_type == 'customer' %}
+						<!-- Customer Navigation -->
+						<li class="nav-item">
+							<a class="nav-link {% if 'profile' in request.path %}active{% endif %}" 
+							   href="{% url 'accounts:profile' %}">
+								<i class="fas fa-user"></i> My Profile
+							</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link {% if 'purchase-history' in request.path %}active{% endif %}" 
+							   href="{% url 'sales:customer_history' %}">
+								<i class="fas fa-history"></i> Purchase History
+							</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link {% if 'points' in request.path %}active{% endif %}" 
+							   href="{% url 'accounts:points' %}">
+								<i class="fas fa-star"></i> Points: {{ user.points }}
+							</a>
+						</li>
+					{% endif %}
+
+					<!-- User Info & Logout (for both staff and customers) -->
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" 
+						   data-bs-toggle="dropdown" aria-expanded="false">
+							<i class="fas fa-user-circle"></i> 
+							{{ user.get_full_name|default:user.username }}
+						</a>
+						<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+							<li>
+								<a class="dropdown-item" href="{% url 'accounts:profile' %}">
+									<i class="fas fa-user-cog"></i> Profile Settings
+								</a>
+							</li>
+							<li><hr class="dropdown-divider"></li>
+							<li>
+								<a class="dropdown-item text-danger" href="{% url 'accounts:logout' %}">
+									<i class="fas fa-sign-out-alt"></i> Logout
+								</a>
+							</li>
+						</ul>
+					</li>
+				{% else %}
+					<!-- Login/Register for non-authenticated users -->
+					<li class="nav-item">
+						<a class="nav-link" href="{% url 'accounts:login' %}">
+							<i class="fas fa-sign-in-alt"></i> Login
+						</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="{% url 'accounts:register' %}">
+							<i class="fas fa-user-plus"></i> Register
+						</a>
+					</li>
+				{% endif %}
+			</ul>
+		</div>
+	</div>
+</nav>

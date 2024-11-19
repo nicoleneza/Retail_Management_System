@@ -1,0 +1,114 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="card">
+        <!-- 1. Header -->
+        <div class="card-header">
+            <h3>Record New Sale</h3>
+        </div>
+
+        <div class="card-body">
+            <form method="post">
+                {% csrf_token %}
+                
+                <!-- 2. Customer Section -->
+                <div class="mb-3">
+                    <label class="form-label">Customer Phone</label>
+                    <input type="tel" name="customer_phone" class="form-control">
+                    <small class="text-muted">Enter phone to use/earn points (optional)</small>
+                </div>
+
+                <!-- 3. Points Section -->
+                <div id="pointsSection" style="display: none;">
+                    <div class="alert alert-info">
+                        <p>Available Points: <span id="pointsDisplay">0</span></p>
+                        <div class="form-check">
+                            <input type="checkbox" name="use_points" class="form-check-input">
+                            <label>Use points for discount?</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4. Products Section -->
+                <div class="mb-3">
+                    <label class="form-label">Products</label>
+                    <div id="products">
+                        <!-- Single Product Row -->
+                        <div class="row mb-2">
+                            <!-- Product Selection -->
+                            <div class="col-md-5">
+                                <select name="product[]" class="form-control" required>
+                                    <option value="">Select Product</option>
+                                    {% for product in products %}
+                                    <option value="{{ product.id }}">
+                                        {{ product.name }} - ${{ product.price }} 
+                                        ({{ product.stock_quantity }} in stock)
+                                    </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <!-- Quantity Input -->
+                            <div class="col-md-3">
+                                <input type="number" name="quantity[]" 
+                                       class="form-control" min="1" value="1">
+                            </div>
+                            <!-- Subtotal Display -->
+                            <div class="col-md-3">
+                                <span class="subtotal">$0.00</span>
+                            </div>
+                            <!-- Remove Button -->
+                            <div class="col-md-1">
+                                <button type="button" class="btn btn-danger btn-sm remove-product">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Add Product Button -->
+                    <button type="button" class="btn btn-secondary" id="addProduct">
+                        <i class="fas fa-plus"></i> Add Product
+                    </button>
+                </div>
+
+                <!-- 5. Payment Section -->
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label>Payment Method</label>
+                        <select name="payment_method" class="form-control">
+                            <option value="cash">Cash</option>
+                            <option value="card">Card</option>
+                            <option value="mobile">Mobile Payment</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label>Amount Paid</label>
+                        <input type="number" name="paid_amount" class="form-control">
+                    </div>
+                </div>
+
+                <!-- 6. Totals Section -->
+                <div class="alert alert-info">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <strong>Subtotal:</strong> $<span id="subtotal">0.00</span>
+                        </div>
+                        <div class="col-md-4">
+                            <strong>Points Discount:</strong> $<span id="pointsDiscount">0.00</span>
+                        </div>
+                        <div class="col-md-4">
+                            <strong>Total:</strong> $<span id="total">0.00</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 7. Submit Buttons -->
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-primary">Complete Sale</button>
+                    <a href="{% url 'sales:index' %}" class="btn btn-secondary">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

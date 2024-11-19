@@ -1,0 +1,22 @@
+retail_management/
+├── retail_management/          # Main project folder
+│   ├── __init__.py
+│   ├── settings.py
+│   ├── urls.py
+│   ├── asgi.py
+│   └── wsgi.py
+├── static/                     # Project-wide static files
+│   ├── css/
+│   ├── js/
+│   └── images/
+├── templates/                  # Project-wide templates
+│   ├── base.html
+│   └── components/
+├── accounts/                   # User management app
+├── inventory/                  # Inventory management app
+├── sales/                     # Sales management app
+├── dashboard/                 # Dashboard app
+├── orders/                    # Orders management app
+├── api/                       # API app
+├── manage.py                   # Command-line utility for the project
+└── venv/                      # Virtual environment (if created) 

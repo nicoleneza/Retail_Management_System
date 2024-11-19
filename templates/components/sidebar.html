@@ -1,0 +1,60 @@
+<nav id="sidebar" class="col-md-3 col-lg-2 d-md-block bg-light sidebar">
+    <div class="position-sticky pt-3">
+        <ul class="nav flex-column">
+            {% if user.user_type == 'staff' %}
+                <li class="nav-item">
+                    <a class="nav-link {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}" 
+                       href="{% url 'dashboard:index' %}">
+                        <i class="fas fa-tachometer-alt"></i> Dashboard
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if 'inventory' in request.path %}active{% endif %}" 
+                       href="{% url 'inventory:index' %}">
+                        <i class="fas fa-boxes"></i> Inventory
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if 'sales' in request.path %}active{% endif %}" 
+                       href="{% url 'sales:index' %}">
+                        <i class="fas fa-shopping-cart"></i> Sales
+                    </a>
+                </li>
+                <li><hr class="sidebar-divider"></li>
+                <li class="nav-item">
+                    <a class="nav-link text-danger" href="{% url 'accounts:logout' %}">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </a>
+                </li>
+            {% endif %}
+
+            {% if user.user_type == 'customer' %}
+                <li class="nav-item">
+                    <a class="nav-link {% if 'profile' in request.path %}active{% endif %}" 
+                       href="{% url 'accounts:profile' %}">
+                        <i class="fas fa-user"></i> My Profile
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if 'purchase-history' in request.path %}active{% endif %}" 
+                       href="{% url 'sales:customer_history' %}">
+                        <i class="fas fa-history"></i> Purchase History
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if 'points' in request.path %}active{% endif %}" 
+                       href="{% url 'accounts:points' %}">
+                        <i class="fas fa-star"></i> My Points
+                        <span class="badge bg-secondary">{{ user.points }}</span>
+                    </a>
+                </li>
+                <li><hr class="sidebar-divider"></li>
+                <li class="nav-item">
+                    <a class="nav-link text-danger" href="{% url 'accounts:login' %}">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </a>
+                </li>
+            {% endif %}
+        </ul>
+    </div>
+</nav> 
