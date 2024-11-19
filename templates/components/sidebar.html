@@ -22,9 +22,12 @@
                 </li>
                 <li><hr class="sidebar-divider"></li>
                 <li class="nav-item">
-                    <a class="nav-link text-danger" href="{% url 'accounts:logout' %}">
-                        <i class="fas fa-sign-out-alt"></i> Logout
-                    </a>
+                    <form method="post" action="{% url 'accounts:logout' %}" class="d-inline">
+                        {% csrf_token %}
+                        <button type="submit" class="nav-link text-danger border-0 bg-transparent w-100 text-start">
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </button>
+                    </form>
                 </li>
             {% endif %}
 
@@ -50,9 +53,12 @@
                 </li>
                 <li><hr class="sidebar-divider"></li>
                 <li class="nav-item">
-                    <a class="nav-link text-danger" href="{% url 'accounts:login' %}">
-                        <i class="fas fa-sign-out-alt"></i> Logout
-                    </a>
+                    <form method="post" action="{% url 'accounts:logout' %}" class="d-inline">
+                        {% csrf_token %}
+                        <button type="submit" class="nav-link text-danger border-0 bg-transparent w-100 text-start">
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </button>
+                    </form>
                 </li>
             {% endif %}
         </ul>

@@ -69,9 +69,12 @@
 							</li>
 							<li><hr class="dropdown-divider"></li>
 							<li>
-								<a class="dropdown-item text-danger" href="{% url 'accounts:logout' %}">
-									<i class="fas fa-sign-out-alt"></i> Logout
-								</a>
+								<form method="post" action="{% url 'accounts:logout' %}" class="d-inline">
+									{% csrf_token %}
+									<button type="submit" class="dropdown-item text-danger">
+										<i class="fas fa-sign-out-alt"></i> Logout
+									</button>
+								</form>
 							</li>
 						</ul>
 					</li>
@@ -83,7 +86,7 @@
 						</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="{% url 'accounts:register' %}">
+						<a class="nav-link" href="{% url 'accounts:signup' %}">
 							<i class="fas fa-user-plus"></i> Register
 						</a>
 					</li>

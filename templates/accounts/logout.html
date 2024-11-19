@@ -2,13 +2,19 @@
 
 {% block content %}
 <div class="container">
-    <h1>Logout</h1>
-    <p>Are you sure you want to logout?.</p>
-    <form method="post" action="{% url 'accounts:logout' %}">
-        {% csrf_token %}
-        <button type="submit" class="btn btn-danger">Logout</button>
-        <a href="{% url 'dashboard:index' %}" class="btn btn-secondary">Cancel</a>
-    </form>
-    <a href="{% url 'accounts:login' %}" class="btn btn-secondary">Cancel</a>
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body text-center">
+                    <h2>Logging Out</h2>
+                    <p>Are you sure you want to logout?</p>
+                    <form method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger">Yes, Logout</button>
+                        <a href="{% url 'dashboard:index' %}" class="btn btn-secondary">Cancel</a>
+                    </form>
+                </div>
+            </div>
+        </div>
 </div>
 {% endblock %}
