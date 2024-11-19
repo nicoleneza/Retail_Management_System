@@ -3,112 +3,111 @@
 {% block content %}
 <div class="container mt-4">
     <div class="card">
-        <!-- 1. Header -->
         <div class="card-header">
-            <h3>Record New Sale</h3>
+            <h3>Create New Sale</h3>
         </div>
-
         <div class="card-body">
-            <form method="post">
+            <form method="post" id="saleForm">
                 {% csrf_token %}
                 
-                <!-- 2. Customer Section -->
+                <!-- Customer Search -->
                 <div class="mb-3">
-                    <label class="form-label">Customer Phone</label>
-                    <input type="tel" name="customer_phone" class="form-control">
-                    <small class="text-muted">Enter phone to use/earn points (optional)</small>
-                </div>
-
-                <!-- 3. Points Section -->
-                <div id="pointsSection" style="display: none;">
-                    <div class="alert alert-info">
-                        <p>Available Points: <span id="pointsDisplay">0</span></p>
-                        <div class="form-check">
-                            <input type="checkbox" name="use_points" class="form-check-input">
-                            <label>Use points for discount?</label>
+                    <label for="customerSearch" class="form-label">Search Customer</label>
+                    <div class="input-group">
+                        <input type="text" 
+                               class="form-control" 
+                               id="customerSearch" 
+                               placeholder="Enter customer username"
+                               autocomplete="off">
+                        <input type="hidden" name="customer_username" id="selectedCustomer">
+                        <button class="btn btn-outline-secondary" type="button" id="clearCustomer">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div id="customerResults" class="list-group mt-2 d-none">
+                        <!-- Search results will appear here -->
+                    </div>
+                    <div id="selectedCustomerInfo" class="mt-2 d-none">
+                        <div class="alert alert-info">
+                            <h6 class="customer-name mb-1"></h6>
+                            <p class="customer-points mb-0"></p>
                         </div>
                     </div>
                 </div>
 
-                <!-- 4. Products Section -->
-                <div class="mb-3">
-                    <label class="form-label">Products</label>
-                    <div id="products">
-                        <!-- Single Product Row -->
-                        <div class="row mb-2">
-                            <!-- Product Selection -->
-                            <div class="col-md-5">
-                                <select name="product[]" class="form-control" required>
-                                    <option value="">Select Product</option>
-                                    {% for product in products %}
-                                    <option value="{{ product.id }}">
-                                        {{ product.name }} - ${{ product.price }} 
-                                        ({{ product.stock_quantity }} in stock)
-                                    </option>
-                                    {% endfor %}
-                                </select>
-                            </div>
-                            <!-- Quantity Input -->
-                            <div class="col-md-3">
-                                <input type="number" name="quantity[]" 
-                                       class="form-control" min="1" value="1">
-                            </div>
-                            <!-- Subtotal Display -->
-                            <div class="col-md-3">
-                                <span class="subtotal">$0.00</span>
-                            </div>
-                            <!-- Remove Button -->
-                            <div class="col-md-1">
-                                <button type="button" class="btn btn-danger btn-sm remove-product">
-                                    <i class="fas fa-times"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Add Product Button -->
-                    <button type="button" class="btn btn-secondary" id="addProduct">
-                        <i class="fas fa-plus"></i> Add Product
-                    </button>
-                </div>
-
-                <!-- 5. Payment Section -->
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <label>Payment Method</label>
-                        <select name="payment_method" class="form-control">
-                            <option value="cash">Cash</option>
-                            <option value="card">Card</option>
-                            <option value="mobile">Mobile Payment</option>
-                        </select>
-                    </div>
-                    <div class="col-md-6">
-                        <label>Amount Paid</label>
-                        <input type="number" name="paid_amount" class="form-control">
-                    </div>
-                </div>
-
-                <!-- 6. Totals Section -->
-                <div class="alert alert-info">
-                    <div class="row">
-                        <div class="col-md-4">
-                            <strong>Subtotal:</strong> $<span id="subtotal">0.00</span>
-                        </div>
-                        <div class="col-md-4">
-                            <strong>Points Discount:</strong> $<span id="pointsDiscount">0.00</span>
-                        </div>
-                        <div class="col-md-4">
-                            <strong>Total:</strong> $<span id="total">0.00</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 7. Submit Buttons -->
-                <div class="d-grid gap-2">
-                    <button type="submit" class="btn btn-primary">Complete Sale</button>
-                    <a href="{% url 'sales:index' %}" class="btn btn-secondary">Cancel</a>
-                </div>
+                {{ form.as_p }}
+                
+                <button type="submit" class="btn btn-primary">Create Sale</button>
             </form>
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+$(document).ready(function() {
+    let searchTimeout;
+    const customerSearch = $('#customerSearch');
+    const customerResults = $('#customerResults');
+    const selectedCustomerInfo = $('#selectedCustomerInfo');
+    const selectedCustomerInput = $('#selectedCustomer');
+
+    customerSearch.on('input', function() {
+        clearTimeout(searchTimeout);
+        const search = $(this).val();
+        
+        if (search.length < 2) {
+            customerResults.addClass('d-none').empty();
+            return;
+        }
+
+        searchTimeout = setTimeout(() => {
+            $.get(`{% url 'sales:get_customers' %}?search=${search}`, function(data) {
+                customerResults.empty();
+                
+                data.customers.forEach(customer => {
+                    const name = customer.first_name && customer.last_name ? 
+                        `${customer.first_name} ${customer.last_name}` : 
+                        customer.username;
+                        
+                    customerResults.append(`
+                        <button type="button" 
+                                class="list-group-item list-group-item-action customer-item"
+                                data-username="${customer.username}"
+                                data-points="${customer.points}"
+                                data-name="${name}">
+                            ${name} (${customer.username})
+                        </button>
+                    `);
+                });
+                
+                customerResults.removeClass('d-none');
+            });
+        }, 300);
+    });
+
+    $(document).on('click', '.customer-item', function() {
+        const username = $(this).data('username');
+        const name = $(this).data('name');
+        const points = $(this).data('points');
+
+        customerSearch.val(username);
+        selectedCustomerInput.val(username);
+        
+        $('.customer-name').text(name);
+        $('.customer-points').text(`Available Points: ${points}`);
+        
+        selectedCustomerInfo.removeClass('d-none');
+        customerResults.addClass('d-none');
+    });
+
+    $('#clearCustomer').click(function() {
+        customerSearch.val('');
+        selectedCustomerInput.val('');
+        selectedCustomerInfo.addClass('d-none');
+        customerResults.addClass('d-none');
+    });
+});
+</script>
 {% endblock %}

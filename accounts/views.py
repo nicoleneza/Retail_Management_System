@@ -3,6 +3,8 @@ from django.views import View
 from .forms import RegisterForm,LoginForm
 from django.shortcuts import redirect
 from django.contrib.auth import authenticate,login,logout
+from django.contrib import messages
+from sales.models import Sale
 
 # # Add your views here, for example:
 # class LoginView(View):
@@ -12,12 +14,19 @@ from django.contrib.auth import authenticate,login,logout
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
-class ProfileView(APIView):
+class ProfileView(View):
     def get(self, request):
-        return Response({
-            'message': 'Hello, World!',
-            'user': str(request.user),
-            })
+        if request.user.user_type == 'staff':
+            return redirect('dashboard:index')
+        
+        recent_purchases = Sale.objects.filter(
+            customer= request.user
+        ).order_by('-date')[:5]
+        context = {
+            'user':request.user,
+            'recent_purchase':recent_purchases
+        }
+        return render(request, 'accounts/profile.html',context)
 
 def signup_views(request):
     if request.method == 'POST':
@@ -41,13 +50,15 @@ def login_views(request):
               
               if user is not None:
                   login(request,user)
-                  return redirect('dashboard:index')
+                  if user.user_type == 'staff':
+                   return redirect('dashboard:index')
+                  else:
+                      return redirect('accounts:profile')
               else:
-                  #invalid login, handle error
-                  pass
+                 messages.error(request,'Invalid username or password')
     else:
-        form = LoginForm
-    return render(request, 'login.html', {'form':form})
+        form = LoginForm()
+    return render(request, 'accounts/login.html', {'form':form})
 
 
 def logout_views(request):

@@ -45,20 +45,15 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {% if 'points' in request.path %}active{% endif %}" 
-                       href="{% url 'accounts:points' %}">
-                        <i class="fas fa-star"></i> My Points
-                        <span class="badge bg-secondary">{{ user.points }}</span>
-                    </a>
+                    <span class="nav-link">
+                        <i class="fas fa-star"></i> My Points: {{ user.points }}
+                    </span>
                 </li>
                 <li><hr class="sidebar-divider"></li>
                 <li class="nav-item">
-                    <form method="post" action="{% url 'accounts:logout' %}" class="d-inline">
-                        {% csrf_token %}
-                        <button type="submit" class="nav-link text-danger border-0 bg-transparent w-100 text-start">
-                            <i class="fas fa-sign-out-alt"></i> Logout
-                        </button>
-                    </form>
+                    <a class="nav-link text-danger" href="{% url 'accounts:logout' %}">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </a>
                 </li>
             {% endif %}
         </ul>

@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h3><i class="fas fa-list"></i> Sales List</h3>
+            <div class="btn-group">
+                <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown">
+                    <i class="fas fa-download"></i> Export
+                </button>
+                <ul class="dropdown-menu">
+                    <li>
+                        <a class="dropdown-item" href="?export=excel">
+                            <i class="fas fa-file-excel"></i> Export to Excel
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" href="?export=csv">
+                            <i class="fas fa-file-csv"></i> Export to CSV
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="card-body">
+            {% if sales %}
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Invoice #</th>
+                                <th>Date</th>
+                                <th>Customer</th>
+                                <th>Amount</th>
+                                <th>Points</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for sale in sales %}
+                            <tr>
+                                <td>{{ sale.invoice_number }}</td>
+                                <td>{{ sale.date|date:"M d, Y" }}</td>
+                                <td>{{ sale.customer.username|default:"Anonymous" }}</td>
+                                <td>${{ sale.total_amount }}</td>
+                                <td>{{ sale.points_earned }}</td>
+                                <td>
+                                    <a href="{% url 'sales:sale_detail' sale.pk %}" 
+                                       class="btn btn-sm btn-info">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <p class="text-center text-muted">No sales records found.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %} 
