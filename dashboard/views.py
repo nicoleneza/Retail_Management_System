@@ -28,7 +28,7 @@ def dashboard(request):
     # Inventory Statistics
     low_stock_threshold = 10
     low_stock_products = Product.objects.filter(
-        quantity__lte=low_stock_threshold
+        stock_quantity__lte=low_stock_threshold
     ).count()
 
     context = {
@@ -36,14 +36,14 @@ def dashboard(request):
         'sales_count': monthly_sales['total_count'] or 0,
         'low_stock_products': low_stock_products,
         'recent_sales': Sale.objects.filter(staff_member=request.user).order_by('-date')[:5],
-        'low_stock_items': Product.objects.filter(quantity__lte=low_stock_threshold).order_by('quantity')[:5],
+        'low_stock_items': Product.objects.filter(stock_quantity__lte=low_stock_threshold).order_by('stock_quantity')[:5],
     }
     
     return render(request, 'dashboard/index.html', context) 
 
 def get_low_stock_count():
     low_stock_threshold = 10
-    return Product.objects.filter(quantity__lte=low_stock_threshold).count()
+    return Product.objects.filter(stock_quantity__lte=low_stock_threshold).count()
 
 def calculate_total_sales():
     month_start = timezone.now().replace(day=1, hour=0, minute=0, second=0, microsecond=0)
@@ -59,7 +59,7 @@ def get_recent_sales():
 
 def get_low_stock_items():
     low_stock_threshold = 10
-    return Product.objects.filter(quantity__lte=low_stock_threshold).order_by('quantity')[:5].values()
+    return Product.objects.filter(stock_quantity__lte=low_stock_threshold).order_by('stock_quantity')[:5].values()
 
 @login_required
 def dashboard_stats(request):

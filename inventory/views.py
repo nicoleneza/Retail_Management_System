@@ -13,7 +13,7 @@ class ProductCreateView(LoginRequiredMixin, CreateView):
     model = Product
     form_class = ProductForm
     template_name = 'inventory/product_form.html'
-    success_url = reverse_lazy('inventory:product_list')
+    success_url = reverse_lazy('inventory:index')
 
 class ProductUpdateView(LoginRequiredMixin, UpdateView):
     model = Product

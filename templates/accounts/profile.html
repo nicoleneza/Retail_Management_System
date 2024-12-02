@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-4">
+    <!-- User Info Section -->
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h4>Profile Information</h4>
+                    <p><strong>Username:</strong> {{ user.username }}</p>
+                    <p><strong>Email:</strong> {{ user.email }}</p>
+                    <p><strong>Name:</strong> {{ user.first_name }} {{ user.last_name }}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Purchase Chart -->
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <h4>Purchase History</h4>
+                    <canvas id="purchaseChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Purchases Table -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <h4>Recent Purchases</h4>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Items</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for purchase in recent_purchase %}
+                                <tr>
+                                    <td>{{ purchase.date }}</td>
+                                    <td>{{ purchase.items }}</td>
+                                    <td>${{ purchase.total }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Include Chart.js from CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<!-- Include your custom chart configuration -->
+<script src="{% static 'js/chart-config.js' %}"></script>
+
+<!-- Initialize the chart with data from Django -->
+<script>
+    const purchaseData = {{ purchase_data|safe }};
+
+    document.addEventListener('DOMContentLoaded', function() {
+        initializePurchaseChart(purchaseData);
+    });
+</script>
+</script>
+</script>
+{% endblock %}

@@ -1,9 +1,22 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 from inventory.models import Product
+from django.contrib.auth.models import User
 
 User = get_user_model()
 
+class Customer(models.Model):
+    name = models.CharField(max_length=100)
+    profession = models.CharField(max_length=50)
+    district = models.CharField(max_length=50)
+    contact = models.CharField(max_length=20)
+    join_date = models.DateTimeField()
+
+class StaffMember(models.Model):
+    name = models.CharField(max_length=100)
+    role = models.CharField(max_length=50)
+    employee_id = models.CharField(max_length=10, unique=True)
+    district = models.CharField(max_length=50)
 class Sale(models.Model):
     PAYMENT_METHODS = (
         ('cash', 'Cash'),
@@ -12,18 +25,14 @@ class Sale(models.Model):
     )
     
     invoice_number = models.CharField(max_length=20, unique=True)
-    customer = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, 
-                               limit_choices_to={'user_type': 'customer'},
-                               related_name='purchases')
-    staff_member = models.ForeignKey(User, on_delete=models.SET_NULL, null=True,
-                                   limit_choices_to={'user_type': 'staff'},
-                                   related_name='sales')
-    date = models.DateTimeField(auto_now_add=True)
+    customer = models.ForeignKey(User, on_delete=models.CASCADE, related_name='customer_sales')
+    staff_member = models.ForeignKey(User, on_delete=models.CASCADE, related_name='staff_sales')
+    date = models.DateTimeField()
     total_amount = models.DecimalField(max_digits=10, decimal_places=2)
     paid_amount = models.DecimalField(max_digits=10, decimal_places=2)
-    payment_method = models.CharField(max_length=10, choices=PAYMENT_METHODS, default='cash')
-    points_earned = models.IntegerField(default=0)
-    points_used = models.IntegerField(default=0)
+    payment_method = models.CharField(max_length=20)
+    points_earned = models.IntegerField()
+    points_used = models.IntegerField()
 
     def __str__(self):
         return f"Invoice #{self.invoice_number}"

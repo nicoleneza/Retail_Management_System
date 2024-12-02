@@ -31,7 +31,7 @@
                 <td>{{product.stock_quantity}}</td>
                 <td>{{product.reord}}</td>
                 <td>
-                    <a href="{% url 'inventory:product_update' product.id %}">
+                    <a href="{% url 'inventory:product_update' product.id %} m-4">
                         <i class="fas fa-edit">Edit</i>
                     </a>
                     <a href="{% url 'inventory:product_delete' product.id %}">
