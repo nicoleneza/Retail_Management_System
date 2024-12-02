@@ -25,72 +25,60 @@ except requests.exceptions.RequestException as e:
     exit()
 
 try:
-    # Standardize customer names by stripping spaces and converting to lowercase
+    # Standardize customer names
     sdf['Customer Name'] = sdf['Customer Name'].str.strip().str.lower()
     cdf['Customer Name'] = cdf['Customer Name'].str.strip().str.lower()
 
-    # Print unique customer names for debugging
-    print("\nUnique customers in sales data:", sdf['Customer Name'].unique())
-    print("\nUnique customers in customer data:", cdf['Customer Name'].unique())
-
-    # Deduplicate the customer data if needed
+    # Deduplicate the customer data
     cdf = cdf.drop_duplicates(subset=['Customer Name'])
 
-    # Merge with a left join to keep all sales records
+    # Merge sales and customer data
     merged_df = pd.merge(
-        sdf, 
-        cdf, 
-        how='left',  # Keep all sales records
-        on='Customer Name',  # Use standardized customer names
-        validate='m:1'  # Many-to-one relationship validation
+        sdf,
+        cdf,
+        how='inner',
+        on='Customer Name',
+        suffixes=('_sales', '_customers')
     )
+   
 
-    # Check for any rows that did not find a match
-    unmatched_rows = merged_df[merged_df['Customer Name'].isnull()]
-    print("\nUnmatched sales records:", unmatched_rows)
+    # Reset index to remove duplicate issues
+    merged_df = merged_df.reset_index(drop=True)
 
-    # Print some diagnostic information
-    print("\nUnique customers in sales data:", sdf['Customer Name'].nunique())
-    print("Unique customers in customer data:", cdf['Customer Name'].nunique())
-    print("Unique customers in merged data:", merged_df['Customer Name'].nunique())
-
-    # Check for missing values
+    # Handle missing values
     print("Missing values before handling:")
     print(merged_df.isnull().sum())
-
     fill_values = {
-    'Customer Name': 'Unknown Customer',
-    'Customer Address': 'Unknown Address',
-    'Total Amount': 0,
-    'Date': pd.Timestamp.now().date(),
-    'Payment Method': 'Unknown',
-    'sales': 0,
-    'revenue': 0,
-    'Email': 'unknown@email.com',
-    'Phone': 'N/A'
-}
-
+        'Customer Name': pd.NA,
+        'Customer Address': pd.NA,
+        'Total Amount': 0,
+        'Date': pd.Timestamp.now().date(),
+        'Payment Method': pd.NA,
+        'sales': 0,
+        'revenue': 0
+    }
     merged_df.fillna(fill_values, inplace=True)
 
-    # Example: Fill missing values for 'Customer Name' with 'Unknown' and 'Sales Amount' with 0
-    
-
-    # Rest of your data processing code...
-    print("Shape of the Merged DataFrame:", merged_df.shape)
-    print("\nDataset Description:\n", merged_df.describe())
-    
-    # Save the merged DataFrame to a CSV file
+    # Save the merged DataFrame
     output_file = "merged_sales_customers.csv"
     merged_df.to_csv(output_file, index=False)
     print(f"\nMerged dataset saved to {output_file}")
 
+    # Add descriptive statistics
+    print("\nDataset Shapre:")
+    print(merged_df.shape)
+
+    print("\nDataset Description:")
+    print(merged_df.describe())
 
 except Exception as e:
     print(f"Error processing data: {e}")
     exit()
 
 try:
-    # After merging the DataFrames
+    # Remove duplicates for feature engineering
+    merged_df = merged_df.loc[~merged_df.duplicated()]
+
     # Create new features
     merged_df['Total Sales'] = merged_df.groupby('Customer Name')['Total Amount'].transform('sum')
     merged_df['Transaction Count'] = merged_df.groupby('Customer Name')['Total Amount'].transform('count')
@@ -98,7 +86,23 @@ try:
     merged_df['Customer Tenure'] = (pd.to_datetime('today') - pd.to_datetime(merged_df['Date'])).dt.days
 
     # Payment Method Frequency
-    merged_df['Payment Method Frequency'] = merged_df.groupby('Customer Name')['Payment Method'].transform(lambda x: x.value_counts().get(x, 0))
+    try:
+        payment_frequency = (
+            merged_df.groupby(['Customer Name', 'Payment Method'])
+            .size()
+            .reset_index(name='Frequency')
+        )
+        # Merge the frequency data back to the main DataFrame
+        merged_df = pd.merge(
+            merged_df,
+            payment_frequency,
+            on=['Customer Name', 'Payment Method'],
+            how='left'
+        )
+        print("Payment Method Frequency added successfully.")
+
+    except Exception as e:
+        print(f"Error adding Payment Method Frequency: {e}")
 
     # Customer Segmentation
     def segment_customer(row):
@@ -108,10 +112,20 @@ try:
             return 'Medium Value'
         else:
             return 'Low Value'
-    
+
     merged_df['Customer Segment'] = merged_df.apply(segment_customer, axis=1)
+    print("Feature creation successful!")
+
+    # Save the updated DataFrame
+    updated_file = "updated_sales_customers.csv"
+    merged_df.to_csv(updated_file, index=False)
+    print(f"\nUpdated dataset saved to {updated_file}")
+
+except Exception as e:
+    print(f"Error processing new features: {e}")
+    exit()
 
 
 except Exception as e:
-    print(f"Error processing data: {e}")
+    print(f"Error adding new features: {e}")
     exit()
