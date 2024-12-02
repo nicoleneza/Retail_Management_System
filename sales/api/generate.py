@@ -3,18 +3,20 @@ import random  # Import for generating random values
 from faker import Faker
 from datetime import datetime, timedelta
 from tabulate import tabulate
-
+import pandas as pd
 # Initialize Faker instance
 fake = Faker()
 
 # Specify the number of records to generate
-num_records = 500000
+num_records = 5000
+customers = pd.read_csv("customers.csv")
+customers = customers["Customer Name"].to_list()
 
 # Generate dataset
 data = [
     {
         "Invoice Number": f"INV-{fake.date_this_year(before_today=True, after_today=False).year}-{i + 1:05d}",
-        "Customer Name": fake.name(),
+        "Customer Name": random.choice(customers),
         "Customer Address": fake.country(),
         "Total Amount": fake.random_int(min=100, max=100000),
         "Date": (fake.date_between(start_date="-60d", end_date="today")).strftime("%Y-%m-%d"),

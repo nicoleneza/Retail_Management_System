@@ -8971,3 +8971,65 @@ Watching for file changes with StatReloader
 "GET /api/customers/ HTTP/1.1" 200 8533
 "GET /api/summary/ HTTP/1.1" 200 55482982
 "GET /api/customers/ HTTP/1.1" 200 8533
+"GET /api/summary/ HTTP/1.1" 200 55482982
+"GET /api/summary/?limit=30 HTTP/1.1" 200 55482982
+"GET /api/customers/ HTTP/1.1" 200 8533
+"GET /api/customers/?limit=30 HTTP/1.1" 200 8542
+"GET /api/summary/ HTTP/1.1" 200 55482982
+"GET /api/summary/?limit=30 HTTP/1.1" 200 55482982
+"GET /api/customers/ HTTP/1.1" 200 8533
+"GET /api/customers/?limit=30 HTTP/1.1" 200 8542
+"GET /api/summary/ HTTP/1.1" 200 55482982
+"GET /api/summary/?limit=30 HTTP/1.1" 200 55482982
+"GET /api/customers/ HTTP/1.1" 200 8533
+"GET /api/customers/?limit=30 HTTP/1.1" 200 8542
+"GET /api/summary/ HTTP/1.1" 200 55482982
+"GET /api/summary/?limit=30 HTTP/1.1" 200 55482982
+"GET /api/customers/ HTTP/1.1" 200 8533
+"GET /api/customers/?limit=30 HTTP/1.1" 200 8542
+- Broken pipe from ('127.0.0.1', 6412)
+"GET /api/summary HTTP/1.1" 301 0
+"GET /api/customers HTTP/1.1" 301 0
+"GET /api/summary/ HTTP/1.1" 200 55482982
+"GET /api/customers/ HTTP/1.1" 200 8533
+"GET /api/summary/ HTTP/1.1" 200 55482982
+"GET /api/summary/?limit=30 HTTP/1.1" 200 55482982
+"GET /api/customers/ HTTP/1.1" 200 8533
+"GET /api/customers/?limit=30 HTTP/1.1" 200 8542
+"GET /api/summary/ HTTP/1.1" 200 55482982
+"GET /api/summary/?limit=30 HTTP/1.1" 200 55482982
+"GET /api/customers/ HTTP/1.1" 200 8533
+"GET /api/customers/?limit=30 HTTP/1.1" 200 8542
+"GET /api/summary/ HTTP/1.1" 200 55482982
+"GET /api/summary/?limit=30 HTTP/1.1" 200 55482982
+"GET /api/customers/ HTTP/1.1" 200 8533
+"GET /api/customers/?limit=30 HTTP/1.1" 200 8542
+C:\Users\user\Desktop\DATA\Y2 notes\Y3\Python\retail_management\retail_management\settings.py changed, reloading.
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+"GET /api/summary/ HTTP/1.1" 200 551466
+"GET /api/customers/ HTTP/1.1" 200 8523
+"GET /api/summary/ HTTP/1.1" 200 551466
+"GET /api/customers/ HTTP/1.1" 200 8523
+"GET /api/summary/ HTTP/1.1" 200 551466
+"GET /api/customers/ HTTP/1.1" 200 8523
+Watching for file changes with StatReloader
+"GET /api/summary/ HTTP/1.1" 200 55482982
+"GET /api/customers/ HTTP/1.1" 200 8533
+"GET /api/summary/ HTTP/1.1" 200 55482982
+"GET /api/customers/ HTTP/1.1" 200 8533
+"GET /api/summary/ HTTP/1.1" 200 55482982
+"GET /api/customers/ HTTP/1.1" 200 8533
+C:\Users\user\Desktop\DATA\Y2 notes\Y3\Python\retail_management\sales\api\views.py changed, reloading.
+Watching for file changes with StatReloader
+"GET /api/summary/ HTTP/1.1" 200 55482982
+"GET /api/customers/ HTTP/1.1" 200 84629247
+"GET /api/summary/ HTTP/1.1" 200 55482982
+"GET /api/customers/ HTTP/1.1" 200 84629247
+C:\Users\user\Desktop\DATA\Y2 notes\Y3\Python\retail_management\sales\api\views.py changed, reloading.
+Watching for file changes with StatReloader
+Internal Server Error: /api/summary/
+"GET /api/summary/ HTTP/1.1" 500 125
+Watching for file changes with StatReloader
+"GET /api/summary/ HTTP/1.1" 200 55482982
+"GET /api/customers/ HTTP/1.1" 200 84629247

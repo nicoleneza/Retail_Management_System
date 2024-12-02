@@ -4,18 +4,26 @@ import pandas as pd
 try:
     # Fetch sales data from the API with timeout
     sales_api = requests.get('http://127.0.0.1:8000/api/summary/', timeout=60)
+    # sales_api2 = requests.get('http://127.0.0.1:8000/api/summary/?limit=0', timeout=60)
     sales_api.raise_for_status()
     sales_api_data = sales_api.json()
+    # sales_api2_data = sales_api2.json()
     
     print("Sales API Response:", sales_api_data.keys())
     sdf = pd.DataFrame(sales_api_data if isinstance(sales_api_data, list) else sales_api_data.get('sales', []))
     sdf = sdf.rename(columns={'customer': 'Customer Name'})
-
+    sdf2 = pd.read_csv("sales_save.csv").drop(columns=["bad_id"])
+    print("sales api data shaper", sdf.shape, sdf.head())
+    
     # Fetch customers data
     customers_api = requests.get('http://127.0.0.1:8000/api/customers/')
+    # customers_api2 = requests.get('http://127.0.0.1:8000/api/customers/?limit=30')
     customers_api.raise_for_status()
     customers_api_data = customers_api.json()
+    # customers_api2_data = customers_api2.json()
     cdf = pd.DataFrame(customers_api_data if isinstance(customers_api_data, list) else customers_api_data.get('results', []))
+    cdf2 = pd.read_csv("customer_save.csv").drop(columns=["bad_id"])
+    print("customer api data shaper", cdf.shape)
     
     print("Sales DataFrame Columns:", sdf.columns.tolist())
     print("Customers DataFrame Columns:", cdf.columns.tolist())
@@ -31,20 +39,46 @@ try:
 
     # Deduplicate the customer data
     cdf = cdf.drop_duplicates(subset=['Customer Name'])
+    # Standardize customer names
+    sdf2['Customer Name'] = sdf2['Customer Name'].str.strip().str.lower()
+    cdf2['Customer Name'] = cdf2['Customer Name'].str.strip().str.lower()
 
+    # Deduplicate the customer data
+    cdf2 = cdf2.drop_duplicates(subset=['Customer Name'])
+    # Deduplicate the customer data
+    cdf = cdf.drop_duplicates(subset=['Customer Name'])
+    print("customer bug shape, small shape", cdf.shape, cdf2.shape)
     # Merge sales and customer data
-    merged_df = pd.merge(
+    merged_df_big = pd.merge(
         sdf,
         cdf,
         how='inner',
         on='Customer Name',
         suffixes=('_sales', '_customers')
     )
-   
+    merged_df_small = pd.merge(
+        sdf2,
+        cdf2,
+        how='inner',
+        on='Customer Name',
+        suffixes=('_sales', '_customers')
+    )
+    merged_df = pd.concat([merged_df_big, merged_df_big])
+
+    # Prepare the limited dataframes for concatenation
+    # mdf1 = pd.DataFrame(sales_api2_data if isinstance(sales_api2_data, list) else sales_api2_data.get('results', []))
+    # mdf2 = pd.DataFrame(customers_api2_data if isinstance(customers_api2_data, list) else customers_api2_data.get('results', []))
+
+    # # Concatenate full and limited data
+    # merged_df2 = pd.concat(mdf1, mdf2)
+
+    # output_file2 = "merged_sales_customers_concat.csv"
+    # merged_df2.to_csv(output_file2, index=False)
+    # print(f"\nMerged dataset saved to {output_file2}")
 
     # Reset index to remove duplicate issues
     merged_df = merged_df.reset_index(drop=True)
-
+    
     # Handle missing values
     print("Missing values before handling:")
     print(merged_df.isnull().sum())
@@ -65,7 +99,7 @@ try:
     print(f"\nMerged dataset saved to {output_file}")
 
     # Add descriptive statistics
-    print("\nDataset Shapre:")
+    print("\nDataset Shape:")
     print(merged_df.shape)
 
     print("\nDataset Description:")
@@ -123,9 +157,4 @@ try:
 
 except Exception as e:
     print(f"Error processing new features: {e}")
-    exit()
-
-
-except Exception as e:
-    print(f"Error adding new features: {e}")
     exit()

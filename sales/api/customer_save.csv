@@ -1,0 +1,51 @@
+bad_id,Invoice Number,Customer Name,Customer Address,Total Amount,Date,Payment Method
+0,INV-2024-02326,Aaron Boyd,Greece,86932.0,2024-11-10,mobile
+1,INV-2024-02988,Aaron Boyd,Palestinian Territory,61759.0,2024-11-13,card
+2,INV-2024-01516,Aaron Bush,Brunei Darussalam,94540.0,2024-11-26,cash
+3,INV-2024-00863,Aaron Combs,Saint Martin,66689.0,2024-10-10,cash
+4,INV-2024-01726,Aaron Cruz,Guinea-Bissau,50234.0,2024-10-29,mobile
+5,INV-2024-03121,Aaron Henry,Botswana,10072.0,2024-10-05,card
+6,INV-2024-04167,Aaron Kim,Palau,60057.0,2024-11-28,card
+7,INV-2024-03750,Aaron Kim,Vanuatu,57916.0,2024-11-30,mobile
+8,INV-2024-01609,Aaron Russell,Singapore,83305.0,2024-11-08,card
+9,INV-2024-04409,Aaron Scott,Azerbaijan,30045.0,2024-10-30,cash
+10,INV-2024-04788,Aaron Todd,Dominica,9221.0,2024-10-07,card
+11,INV-2024-04372,Aaron Underwood,Switzerland,40136.0,2024-11-21,mobile
+12,INV-2024-00239,Aaron Underwood,Anguilla,95394.0,2024-11-28,card
+13,INV-2024-00038,Aaron Underwood,Swaziland,80378.0,2024-10-23,card
+14,INV-2024-04003,Abigail Ashley,Indonesia,81271.0,2024-11-22,card
+15,INV-2024-03418,Abigail Ashley,Guatemala,63877.0,2024-10-14,mobile
+16,INV-2024-04939,Abigail Ashley,Isle of Man,74177.0,2024-10-17,card
+17,INV-2024-02458,Abigail Rubio,India,52412.0,2024-11-29,card
+18,INV-2024-02258,Abigail Zamora,Thailand,29930.0,2024-10-29,mobile
+19,INV-2024-03616,Abigail Zamora,Latvia,18014.0,2024-10-05,card
+20,INV-2024-01343,Adam Mora,Pitcairn Islands,11502.0,2024-10-03,mobile
+21,INV-2024-03918,Adam Mora,Liberia,94742.0,2024-10-27,mobile
+22,INV-2024-03698,Adam Patterson,Grenada,6847.0,2024-11-24,mobile
+23,INV-2024-02051,Adam Stewart,Macao,4718.0,2024-11-21,mobile
+24,INV-2024-00609,Adam Webster,Spain,91828.0,2024-10-07,mobile
+25,INV-2024-02023,Adrian Garcia,Christmas Island,81203.0,2024-11-20,cash
+26,INV-2024-02692,Adriana Bryant,Cook Islands,36448.0,2024-11-26,card
+27,INV-2024-00346,Adriana Bryant,French Polynesia,59282.0,2024-10-06,mobile
+28,INV-2024-03325,Adriana Peterson,Dominican Republic,42274.0,2024-10-07,card
+29,INV-2024-04740,Adriana Peterson,Sudan,315.0,2024-11-21,card
+30,INV-2024-04336,Alan Martin,British Virgin Islands,57521.0,2024-11-26,card
+31,INV-2024-02495,Alan Martin,Georgia,25156.0,2024-11-10,cash
+32,INV-2024-04369,Alan Roberts,Nicaragua,90746.0,2024-11-06,mobile
+33,INV-2024-03567,Albert Anderson,Djibouti,80538.0,2024-11-15,card
+34,INV-2024-00218,Albert Brown,Barbados,199.0,2024-11-26,card
+35,INV-2024-01389,Alejandra Decker,Malta,71729.0,2024-11-16,cash
+36,INV-2024-02511,Alejandra Garcia,United States of America,53649.0,2024-10-03,cash
+37,INV-2024-00328,Alejandra Garcia,Congo,58108.0,2024-11-28,mobile
+38,INV-2024-03076,Alejandra Newton MD,Bulgaria,56203.0,2024-10-23,card
+39,INV-2024-01468,Alejandro Kim,Holy See (Vatican City State),98167.0,2024-10-12,card
+40,INV-2024-01435,Alejandro Kim,Mauritania,66212.0,2024-11-13,mobile
+41,INV-2024-01050,Alejandro Reed,Lao People's Democratic Republic,83952.0,2024-11-05,mobile
+42,INV-2024-01159,Alex Aguilar,Andorra,2600.0,2024-11-27,cash
+43,INV-2024-03796,Alex Aguilar,Guinea,55916.0,2024-11-13,card
+44,INV-2024-04831,Alex Aguilar,Libyan Arab Jamahiriya,34975.0,2024-10-22,card
+45,INV-2024-02966,Alex Keith,Holy See (Vatican City State),74558.0,2024-11-25,mobile
+46,INV-2024-02374,Alex Keith,Paraguay,36804.0,2024-10-15,mobile
+47,INV-2024-00009,Alex Smith,Marshall Islands,84275.0,2024-11-23,cash
+48,INV-2024-01369,Alexa Petersen,Taiwan,72892.0,2024-11-25,cash
+49,INV-2024-00013,Alexander Davis,Cuba,64364.0,2024-11-03,mobile

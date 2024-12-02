@@ -8,7 +8,7 @@ from tabulate import tabulate
 fake = Faker()
 
 # Specify the number of records to generate
-num_customers = 500000
+num_customers = 5000
 
 # Generate dataset
 customers = [

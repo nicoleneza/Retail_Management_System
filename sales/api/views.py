@@ -14,9 +14,9 @@ from django.db import connection
 logger = logging.getLogger(__name__)
 
 class StandardResultsSetPagination(PageNumberPagination):
-    page_size = 50  # Increased from 10
+    page_size = 500000  # Increased from 10
     page_size_query_param = 'page_size'
-    max_page_size = 1000  # Increased from 100
+    max_page_size = 1000000  # Increased from 100
 
 
 class SaleViewSet(viewsets.ModelViewSet):

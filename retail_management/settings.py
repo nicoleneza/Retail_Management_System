@@ -105,6 +105,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'retail',  # Replace with your database name
+        # 'NAME': 'retail',  # Replace with your database name
         'USER': 'postgres',  # Replace with your database user
         'PASSWORD': 'nicolebbb',  # Replace with your database password
         'HOST': 'localhost',  # Set to 'localhost' or your database host
